@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import './App.css';
 import ePub from 'epubjs/lib/index';
 import Dropzone from 'react-dropzone';
+import { convertEpub } from './zipUtils';
 
 function App() {
   const [epubFile, setEpubFile] = useState(null);
@@ -17,14 +18,7 @@ function App() {
       return;
     }
 
-    const book = await ePub(epubFile);
-    // TODO: Modify book contents
-
-    const blobUrl = window.URL.createObjectURL(book.toBlob());
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = `${book.filename()}-converted.epub`;
-    link.click();
+    await convertEpub(epubFile);
   }, [epubFile]);
 
   return (
